@@ -10,6 +10,17 @@ class ProcessorTest < Test::Unit::TestCase
       assert_equal 3, Person.count
       assert_equal "Foxworthy", Person.find(2).last_name
     end
+
+    context 'for MySql' do
+      should "should default to using 'LOAD DATA LOCAL INFILE'" do
+        flexmock(ActiveRecord::ConnectionAdapters::Mysql2Adapter).
+          new_instances.
+          should_receive(:bulk_load).
+          with(Pathname, String, FlexMock.hsh(:local_infile => true))
+
+        do_bulk_import
+      end
+    end
   end
   
   def test_bulk_import_with_empties
