@@ -71,9 +71,9 @@ module ETL #:nodoc:
           conn.truncate(table_name) if truncate
           options = {}
           options[:columns] = columns
-          
           options[:disable_keys] = true if disable_keys
           options[:replace] = true if replace
+          options[:local_infile] = true
           
           if field_separator || field_enclosure || line_separator || null_string
             options[:fields] = {}
